@@ -97,4 +97,18 @@ public class UtilsTests {
       arguments(false, new String[] {"value1", "value2", "value3"})
     );
   }
+
+  @CsvSource({
+    ",,/api?query=cql.allRecords=1",
+    "1,10,/api?query=cql.allRecords=1&offset=0&limit=10",
+    "5,15,/api?query=cql.allRecords=1&offset=4&limit=11",
+    ",10,/api?query=cql.allRecords=1&limit=10",
+    "5,,/api?query=cql.allRecords=1&offset=4",
+  })
+  @ParameterizedTest
+  void appendQueryLimits_parameterized(Integer start, Integer end, String expected) {
+    var sb = new StringBuilder("/api?query=cql.allRecords=1");
+    var result = Utils.appendQueryLimits(sb, start, end);
+    assertEquals(expected, result.toString());
+  }
 }

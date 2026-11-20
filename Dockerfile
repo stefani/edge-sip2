@@ -5,6 +5,10 @@ USER root
 RUN apk upgrade --no-cache
 USER folio
 
+# Java4Shell (CVE-2026-114938) mitigation: disable the vulnerable AVX-512 Base64
+# intrinsic until the base image ships OpenJDK >= 21.0.13.1. Remove afterwards.
+ENV JDK_JAVA_OPTIONS="-XX:-UseBASE64Intrinsics"
+
 ENV VERTICLE_FILE edge-sip2-fat.jar
 
 # Set the location of the verticles
